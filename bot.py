@@ -63,7 +63,6 @@ async def get_user_join(id):
         ok = False
     return ok
 
-
 @BotzHub.on(events.ChatAction)
 async def _(event):
     if on_join is False:
@@ -83,6 +82,7 @@ async def _(event):
         last = user.last_name
         fullname = f"{name} {last}" if last else name
         username = f"@{uu}" if (uu := user.username) else mention
+        gbr = f"https://telegra.ph/file/a6e1419f7d2996560cbaf.jpg"
         x = await get_user_join(user.id)
         if x is True:
             msg = welcome_msg.format(
@@ -92,10 +92,10 @@ async def _(event):
                 username=username,
                 name=name,
                 last=last,
-                channel=f"@{channel}",
                 count=count,
+                channel=f"@{channel}",
             )
-            butt = [Button.url("Channel", url=f"https://t.me/{channel}")]
+            butt = [Button.url("✅ ᴅᴀꜰᴛᴀʀ ✅", url=f"http://www.officialhaotogel.com")]
         else:
             msg = welcome_not_joined.format(
                 mention=mention,
@@ -108,14 +108,14 @@ async def _(event):
                 count=count,
             )
             butt = [
-                Button.url("Channel", url=f"https://t.me/{channel}"),
+                Button.url("Group", url=f"https://t.me/{channel}"),
                 Button.inline("UnMute Me", data=f"unmute_{user.id}"),
             ]
             await BotzHub.edit_permissions(
                 event.chat.id, user.id, until_date=None, send_messages=False
             )
 
-        await event.reply(msg, buttons=butt)
+        await event.reply(msg, buttons=butt, file=gbr)
 
 
 @BotzHub.on(events.NewMessage(incoming=True))
@@ -158,7 +158,7 @@ async def mute_on_msg(event):
             count=count,
         )
         butt = [
-            Button.url("Channel", url=f"https://t.me/{channel}"),
+            Button.url("Group", url=f"https://t.me/{channel}"),
             Button.inline("UnMute Me", data=f"unmute_{event.sender_id}"),
         ]
         await event.reply(reply_msg, buttons=butt)
@@ -170,9 +170,10 @@ async def _(event):
     if uid == event.sender_id:
         x = await get_user_join(uid)
         nm = event.sender.first_name
+        media = f"https://telegra.ph/file/47daa45c86bc30a4a979c.jpg"
         if x is False:
             await event.answer(
-                f"You haven't joined @{channel} yet!", cache_time=0, alert=True
+                f"Kamu harus join @{channel} untuk dapat mengirim pesan di group, Setelah itu klik tombol UnMute Me!", cache_time=0, alert=True
             )
         elif x is True:
             try:
@@ -182,17 +183,17 @@ async def _(event):
             except Exception as e:
                 log.error(e)
                 return
-            msg = f"Welcome to {(await event.get_chat()).title}, {nm}!\nGood to see you here!"
-            butt = [Button.url("Channel", url=f"https://t.me/{channel}")]
-            await event.edit(msg, buttons=butt)
+            msg = f"{nm}, Selamat bergabung di group, Salam JP !! Salam HAOTOGEL"
+            butt = [Button.url("✅ ᴅᴀꜰᴛᴀʀ ✅", url=f"http://www.officialhaotogel.com")]
+            await event.edit(msg, file=media, buttons=butt)
     else:
         await event.answer(
-            "You are an old member and can speak freely! This isn't for you!",
+            "Tombol ini bukan buat kamu bro!",
             cache_time=0,
             alert=True,
         )
 
 
 
-log.info("ForceSub Bot has started as @%s.", bot_self.username)
+log.info("Bot has started as @%s.", bot_self.username)
 BotzHub.run_until_disconnected()
